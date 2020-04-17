@@ -9,6 +9,7 @@ import { Satellite } from './satellite';
 export class AppComponent {
   title = 'orbit-report';
   sourceList:Satellite[];
+  displayList:Satellite[];
   constructor() {
     this.sourceList = [];
     let satellitesUrl = 'https://handlers.education.launchcode.org/static/satellites.json';
@@ -22,7 +23,22 @@ export class AppComponent {
             this.sourceList.push(satellite);
           }
           // TODO: add the new Satellite object to sourceList using: 
-       }.bind(this));
+          this.displayList = this.sourceList.slice(0);
+         }.bind(this));
     }.bind(this));
   }
+
+  search(searchTerm: string): void {
+    let matchingSatellites: Satellite[] = [];
+    searchTerm = searchTerm.toLowerCase();
+    for(let i=0; i < this.sourceList.length; i++) {
+       let name = this.sourceList[i].name.toLowerCase();
+       if (name.indexOf(searchTerm) >= 0) {
+          matchingSatellites.push(this.sourceList[i]);
+       }
+    }
+  
+    this.displayList = matchingSatellites;
+
+ }
 }
